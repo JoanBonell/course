@@ -8,7 +8,7 @@ int status;
 pid_t child_pid;
 
 int main(int argc, char* argv[]){
-	pid_t pid;
+	pid_t pid; //
 	if ((pid = fork()) < 0) {
 		err(EXIT_FAILURE, "fork error");
 	} else if (pid == 0) {	
