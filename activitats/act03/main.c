@@ -29,7 +29,7 @@ main(int argc, char *argv[]){
 
 void launchcmd(char** arguments){
     pid_t pid;
-   // int st;
+    int st;
     pid = fork();
     if(pid == 0){
         
@@ -40,7 +40,7 @@ void launchcmd(char** arguments){
         
     }
     else{
-        wait(NULL);
-       // waitpid(pid, &st, NULL);
+       // wait(NULL);
+        waitpid(pid, &st, NULL);
     }
 }
