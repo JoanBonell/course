@@ -8,21 +8,23 @@
 #include "helpers.h"
 
 int split_line(char *line, char* separator, char ***tokens){
+    const size_t BUFFER_SIZE = 100;
     int i = 0;
-    char *token;
-    char **tokens_aux = NULL;
+    char **_tokens = *tokens;
+    *tokens = malloc(sizeof(char*)*BUFFER_SIZE);
+    char *token = malloc(sizeof(char)*BUFFER_SIZE);
     token = strtok(line, separator);
-    while(token != NULL){
-        tokens_aux = realloc(tokens_aux, sizeof(char*) * (i+1));
-        if(tokens_aux == NULL){
-            fprintf(stderr, "Error: %s\n", strerror(errno));
-            return -1;
-        }
-        tokens_aux[i] = token;
-        i++;
+    while (token!=NULL)
+    {
         token = strtok(NULL, separator);
+        _tokens[i] = token;
+        i++;
+        if(i>=BUFFER_SIZE){
+            BUFFER_SIZE += i;
+            _tokens = realloc(_tokens, sizeof(char*)*BUFFER_SIZE);
+        }
     }
-    return 0;
+    return i;
 }
 int read_line(char** line){
     size_t s_buffer;
