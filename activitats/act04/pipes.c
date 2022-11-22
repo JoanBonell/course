@@ -7,10 +7,17 @@
 #include <sys/wait.h>
 #include <errno.h>
 
+#define READ_END 0
+#define WRITE_END 1
+
+
 int main(int argc, char *argv[])
 {
     int fd[2];
-    
+    int status;
+    //Implement stdin and stdout < > and | pipes
+    //https://www.youtube.com/watch?v=8LdQ09Ep9RY
+
     char *p1[] = {"ls", NULL}; 
     char *p2[] = {"wc", "-l", NULL}; 
 
@@ -30,8 +37,8 @@ int main(int argc, char *argv[])
             // Fill -> wc -l -> llegeix stdin i imprimeix a stdout
             // Tanquem stdin per llegir i redireccionem stdin per llegir de la pipe fd[0]
             dup2(fd[0],STDIN_FILENO);
-            close(fd[1]);
-            close(fd[0]);
+            close(fd[READ_END]);
+            close(fd[WRITE_END]);
             execvp(p2[0], p2);
             return EXIT_FAILURE;
     }
@@ -44,12 +51,12 @@ int main(int argc, char *argv[])
             // Fill -> ls -> imprimeix a stdout
             // Tanquem stdout i redireccionem stdout a l'escriptura fd[1] de la pipe
             dup2(fd[1],STDOUT_FILENO);
-            close(fd[0]);
-            close(fd[1]);
+            close(fd[READ_END]);
+            close(fd[WRITE_END]);
             execvp(p1[0], p1);
             return EXIT_FAILURE;
     }
-    close(fd[0]);
+    close(fd[0 ]);
     close(fd[1]);
     waitpid(pid1,0,0);
     waitpid(pid2,0,0);
