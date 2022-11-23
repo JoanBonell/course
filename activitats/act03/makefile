@@ -1,6 +1,6 @@
 CC=GCC
 CFLAGS = -c -Wall
-SOURCES= log.c ossh.c helpers.c
+SOURCES= shell.c helpers.c
 EXECS = ohsh
 
 OBJECTS=$(SOURCES:.c=.o)
