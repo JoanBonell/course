@@ -1,6 +1,7 @@
 /*@authors:
     - Ricard Bosch Perianes ©
     - Joan Bonell Ruiz ©
+    CORREGIR ROOT A WHOAMI
 */
 #include <stdlib.h>
 #include <stdio.h>
