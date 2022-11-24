@@ -22,13 +22,13 @@ int main(int argc, char *argv[])
     int fd[2], fd1[2];
     FILE *fp;
     
-    fp = fopen("user.txt", "w");
+    fp = fopen("user.txt", "a");
 
     int status;
     //Implement stdin and stdout < > and | pipes
     //https://www.youtube.com/watch?v=8LdQ09Ep9RY
 
-    char *p1[] = {"grep", NULL}; 
+    char *p1[] = {"grep", "root",NULL}; 
     char *p2[] = {"cat", "/etc/passwd", NULL}; 
     char *p3[] = {"$(whoami)", NULL};
 
@@ -58,13 +58,15 @@ int main(int argc, char *argv[])
             close(fd[0]);
             execvp(p3[0], p3);
             return EXIT_FAILURE;
-        default:
+        //default:
             // Pare -> cat -> llegeix stdin i imprimeix a stdout
             // Tanquem stdout per escriure i redireccionem stdout per escriure a la pipe fd[1]
-            waitpid(pid2, 0, 0);
-            p2[1] = malloc(sizeof(fd1[0]));
-            close(fd[1]);
-            close(fd[0]);
+
+            // NO CAL
+            //waitpid(pid2, 0, 0);
+            //p2[1] = malloc(sizeof(fd1[0]));
+            //close(fd[1]);
+            //close(fd[0]);
     }
 
     switch (pid1 = fork()){
@@ -74,7 +76,7 @@ int main(int argc, char *argv[])
         case 0:
             // Fill -> grep whoami -> llegeix stdin -> imprimeix a stdout
             // Tanquem stdout i redireccionem stdout a l'escriptura fd[1] de la pipe
-            dup2(fd[1],STDOUT_FILENO);
+            dup2(fd[0],STDIN_FILENO);
             dup2(fileno(fp),STDOUT_FILENO);
             close(fd[1]);
             close(fd[0]);
@@ -86,9 +88,9 @@ int main(int argc, char *argv[])
             perror("Error fork() - pid3");
             return EXIT_FAILURE;
         case 0:
-            // Fill -> cat /etc/passwd -> llegeix stdin -> imprimeix a stdout
-            // Tanquem stdin i redireccionem stdin a la lectura fd[0] de la pipe
-            dup2(fd[0],STDIN_FILENO);
+            // Fill -> cat /etc/passwd -> llegeix argument -> imprimeix a stdout
+            // Tanquem stdout i redireccionem stfout a la escriptura fd[1] de la pipe
+            dup2(fd[1],STDOUT_FILENO);
             close(fd[1]);
             close(fd[0]);
             execvp(p2[0], p2);
