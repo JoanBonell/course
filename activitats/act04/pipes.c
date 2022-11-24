@@ -1,6 +1,7 @@
 /*@authors:
     - Ricard Bosch Perianes ©
     - Joan Bonell Ruiz ©
+    Pendent de fer: ús correcte de whoami encomptes de "root".
 */
 #include <stdlib.h>
 #include <stdio.h>
