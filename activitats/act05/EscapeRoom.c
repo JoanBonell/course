@@ -6,24 +6,32 @@
 #include <signal.h>
 #include <sys/wait.h>
 
+#define KNRM  "\x1B[0m"
+#define KRED  "\x1B[31m"
+#define KGRN  "\x1B[32m"
+#define KYEL  "\x1B[33m"
+#define KBLU  "\x1B[34m"
+#define KMAG  "\x1B[35m"
+#define KCYN  "\x1B[36m"
+#define KWHT  "\x1B[37m"
+
 void crear_jugadores(int n_jugadores, pid_t *pid[]);
 int main(int argc, char *argv[]){
+    char s[100];
+    //Initialize *argv[] to ./jugador 1 2 aaaa
+    
     /*  Per a fer servir el programa, l'usuari hauria de fer:
         ./sala arg1 arg2 arg3
         Per això, ens assegurarem que l'usuari ens passi 3 arguments
         de la següent manera, si no, atuarem directament el programa.*/
-    /*if(argc <= 3){
-        printf("Has de posar com a mínim 3 arguments\n");
+        //sprintf(s, "%sOh no!The pokemon broke free.%s\n", KBLU,KNRM);
+    if(argc < 3){
+        sprintf(s, "Has de posar com a mínim 3 arguments\n", KRED, KNRM);
         return 0;
-    }*/
-    /*  Només per a debuggar:*/
-    argv[0] = "1";
-    argv[1] = "2";
-    argv[2] = "aaaa";
-
+    }
     /*  argv[2] = número de segons que volem que duri la partida com a màxim,
         passarem aquest string a int i ho guardarem a 'num_segons_partida'*/
-    int num_segons_partida = atoi(argv[1]); // Passem el string argv[2] a int i ho guardem a 'num_segons_partida'.
+    int num_segons_partida = atoi(argv[1]); // Passem el string argv[1] a int i ho guardem a 'num_segons_partida'.
 
     int n_jugadores = atoi(argv[2]);
     pid_t * pids = malloc(sizeof(pid_t) * n_jugadores);
