@@ -1,7 +1,10 @@
 /*@authors:
     - Ricard Bosch Perianes ©
     - Joan Bonell Ruiz ©
+
+
     Pendent de fer: ús correcte de whoami encomptes de "root".
+
 */
 #include <stdlib.h>
 #include <stdio.h>
@@ -29,8 +32,9 @@ int main(int argc, char *argv[])
     //Implement stdin and stdout < > and | pipes
     //https://www.youtube.com/watch?v=8LdQ09Ep9RY
 
-    char *p1[] = {"grep", "root",NULL}; 
-    char *p2[] = {"cat", "/etc/passwd", NULL}; 
+
+    char *p1[] = {"grep", NULL}; 
+    //char *p2[] = {"cat", "/etc/passwd", NULL}; 
     char *p3[] = {"$(whoami)", NULL};
 
     if (pipe(fd)<0){
@@ -77,14 +81,17 @@ int main(int argc, char *argv[])
         case 0:
             // Fill -> grep whoami -> llegeix stdin -> imprimeix a stdout
             // Tanquem stdout i redireccionem stdout a l'escriptura fd[1] de la pipe
-            dup2(fd[0],STDIN_FILENO);
+
+            //dup2(fd[1],STDOUT_FILENO);
+            dup2(fileno(fp2),STDIN_FILENO);
+
             dup2(fileno(fp),STDOUT_FILENO);
             close(fd[1]);
             close(fd[0]);
             execvp(p1[0], p1);
             return EXIT_FAILURE;
     }
-    switch(pid3 = fork()){
+    /*switch(pid3 = fork()){
         case -1:
             perror("Error fork() - pid3");
             return EXIT_FAILURE;
@@ -96,7 +103,7 @@ int main(int argc, char *argv[])
             close(fd[0]);
             execvp(p2[0], p2);
             return EXIT_FAILURE;
-    }
+    }*/
     close(fd[0]);
     close(fd[1]);
     close(fd1[0]);

@@ -1,7 +1,7 @@
 CC=GCC
 CFLAGS = -c -Wall
-SOURCES= shell.c helpers.c
-EXECS = ohsh
+SOURCES= jugador.c EscapeRoom.c
+EXECS = EscapeRoom
 
 OBJECTS=$(SOURCES:.c=.o)
 
@@ -16,3 +16,12 @@ clean:
 
 execute: $(EXECS)
 	./$(EXECS)
+
+test1: $(EXECS)
+	./$(EXECS) aaaa
+
+test2: $(EXECS)
+	./$(EXECS) abab
+
+test3: $(EXECS)
+	./$(EXECS) abba

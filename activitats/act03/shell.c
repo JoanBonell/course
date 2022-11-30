@@ -48,7 +48,7 @@ char *shell_read_line(void){
     return line;
 }
 
-char **shell_split_line(char *line){
+char **shell_split_line(char *line, char* separator){
     int bufsize = SHELL_TOK_BUFSIZE, position = 0;
     char **tokens = malloc(bufsize * sizeof(char*));
     char *token;
@@ -58,8 +58,9 @@ char **shell_split_line(char *line){
         exit(EXIT_FAILURE);
     }
 
-    token = strtok(line, SHELL_TOK_DELIM);
+    token = strtok(line, separator);
     while(token != NULL){
+        //strdup() o strcpy() amb malloc de tokens[position]
         tokens[position] = token;
         position++;
 
@@ -72,7 +73,7 @@ char **shell_split_line(char *line){
             }
         }
 
-        token = strtok(NULL, SHELL_TOK_DELIM);
+        token = strtok(NULL, separator);
     }
     tokens[position] = NULL;
     return tokens;
