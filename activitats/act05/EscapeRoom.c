@@ -37,8 +37,8 @@ int main(int argc, char *argv[]){
     int n_jugadores = atoi(argv[2]); // Passem el string argv[2] a int i ho guardem a 'n_jugadores'.
     pid_t * pids = malloc(sizeof(pid_t) * n_jugadores); // Reservem memòria per a guardar els pid dels jugadors.
     //pipe(fd1); // Creem el pipe per a comunicar el pare amb el fill.
-    crear_jugadores(n_jugadores, &pids); // Creem els jugadors.
-    /*for(int i = 0; i < n_jugadores; i++){
+    //crear_jugadores(n_jugadores, &pids); // Creem els jugadors.
+    for(int i = 0; i < n_jugadores; i++){
         pids[i] = fork(); // Creem un nou procés per a cada jugador.
         
         switch (pids[i]) // Comprovem si s'ha creat correctament.
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]){
             perror("Error fork() - pid \n");
             break;
         }  
-    }*/
+    }
 
     //Create a pipe
     int fd[2];
